@@ -9,6 +9,7 @@ authors = ["Max Simões dos Santos <max.santos@tpv-tech.com>"]
 python = "^3.8"
 fastapi = "^0.109.0"
 uvicorn = "^0.27.0.post1"
+confluent-kafka = "^2.3.0"
 
 [tool.poetry.scripts]
 start = "str_producer.main:start"
