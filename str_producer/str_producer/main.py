@@ -1,13 +1,52 @@
 import asyncio
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import uvicorn
+from confluent_kafka import Producer
+import json
+
+kafka_bootstrap_servers = 'localhost:9092'
+kafka_topic = 'nome_do_topico'
 
 app = FastAPI()
+
+kafka_config = {
+    'bootstrap.servers': kafka_bootstrap_servers,
+    'client.id': 'json-producer'
+}
+
+
+producer = Producer(kafka_config)
 
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+
+def delivery_report(err, msg):
+    if err is not None:
+        raise HTTPException(
+            status_code=500,
+            detail=f'Erro ao enviar a mensagem para o Kafka: {str(err)}'
+            )
+
+
+@app.post("/send")
+async def send_to_kafka(message: dict):
+    topic = 'teste'
+    try:
+        # Enviar mensagem para o tópico especificado
+        json_message = json.dumps(message)
+        producer.produce(topic, value=json_message, callback=delivery_report)
+        producer.flush()
+
+        return {
+            "status": "Mensagem enviada com sucesso para o tópico {}"
+            .format(topic)
+            }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def start():
