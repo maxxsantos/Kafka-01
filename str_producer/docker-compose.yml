@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  str-producer:
+    container_name: str-producer
+    build:
+      context: .
+    env_file:
+      - path: ./config/.env
+        required: true
+    ports:
+      - ${API_PORT}:${API_PORT}
