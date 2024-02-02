@@ -13,3 +13,9 @@ make
 
 make install
 ```
+
+## Up Applications with docker
+
+```bash
+make up
+```
