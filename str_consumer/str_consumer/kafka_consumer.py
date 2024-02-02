@@ -1,6 +1,7 @@
 from confluent_kafka import Consumer, KafkaError
 import threading
 import json
+import sys
 
 
 class KafkaConsumerThread(threading.Thread):
@@ -20,6 +21,7 @@ class KafkaConsumerThread(threading.Thread):
         self.consumer.subscribe([self.topic])
 
     def run(self):
+        # print('Hello RUN')
         try:
             while not self.stop_event.is_set():
                 msg = self.consumer.poll(timeout=1000)
@@ -37,6 +39,7 @@ class KafkaConsumerThread(threading.Thread):
                 message_value = json.loads(msg.value().decode('utf-8'))
                 self.messages.append(message_value)
                 print(f'Mensagem recebida: {message_value}')
+                sys.stdout.flush()
 
         except Exception as e:
             print(f'Erro na thread de consumo: {str(e)}')

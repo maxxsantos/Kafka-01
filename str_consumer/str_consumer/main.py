@@ -6,7 +6,7 @@ import os
 
 app = FastAPI()
 
-bootstrap_servers = '192.168.25.8:9092'
+bootstrap_servers = '172.31.141.162:9092'
 group_id = 'group-1'
 topic = 'teste'
 

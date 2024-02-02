@@ -11,8 +11,12 @@ services:
       - "4000:4000"
     networks:
       - str-consumer-ntw
+      # - broker-kafka
 
 networks:
   str-consumer-ntw:
     name: str-consumer-ntw
     driver: bridge
+  # broker-kafka:
+  #   name: brocker-kafka
+  #   driver: bridge
