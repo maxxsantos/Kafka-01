@@ -6,9 +6,9 @@ import os
 
 app = FastAPI()
 
-bootstrap_servers = 'localhost:9092'
+bootstrap_servers = '192.168.25.8:9092'
 group_id = 'group-1'
-topic = 'teste1'
+topic = 'teste'
 
 consumer_thread = KafkaConsumerThread(bootstrap_servers, group_id, topic)
 consumer_thread.start()
@@ -16,7 +16,7 @@ consumer_thread.start()
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"message": "Hello World"}
 
 
 @app.get('/consume', response_model=dict)
@@ -33,7 +33,7 @@ def start():
         app=app,
         loop="auto",
         port=os.getenv('API_PORT', 4000),
-        host=os.getenv('API_HOST', 'localhost')
+        host=os.getenv('API_HOST', '0.0.0.0')
     )
     server = uvicorn.Server(config)
     loop.run_until_complete(server.serve())
