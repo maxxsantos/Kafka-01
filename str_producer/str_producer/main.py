@@ -5,10 +5,8 @@ from confluent_kafka import Producer
 import json
 import os
 
-kafka_bootstrap_servers = os.getenv('KAFKA_BROKER', 'localhost:9092')
-kafka_topic = os.getenv('KAFKA_TOPIC', 'teste1')
-num_partitions = 3
-num_replicas = 2
+kafka_bootstrap_servers = '192.168.25.8:9092'
+kafka_topic = 'teste'
 
 app = FastAPI()
 
@@ -23,7 +21,7 @@ producer = Producer(kafka_config)
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"message": "Hello World"}
 
 
 def delivery_report(err, msg):
@@ -34,15 +32,14 @@ def delivery_report(err, msg):
             )
 
 
-@app.post("/send/{key}")
-async def send_to_kafka(key: str, message: dict):
+@app.post("/produce")
+async def send_to_kafka(message: dict):
     try:
         # Enviar mensagem para o tópico especificado
         json_message = json.dumps(message)
 
         producer.produce(
             kafka_topic,
-            key=key,
             value=json_message,
             callback=delivery_report
             )
@@ -65,7 +62,7 @@ def start():
         app=app,
         loop="auto",
         port=os.getenv('API_PORT', 3000),
-        host=os.getenv('API_HOST', 'localhost')
+        host=os.getenv('API_HOST', '0.0.0.0')
     )
     server = uvicorn.Server(config)
     loop.run_until_complete(server.serve())
