@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  str-consumer:
+    container_name: str-consumer
+    build:
+      context: .
+    env_file:
+      - "./config/.env"
+    ports:
+      - "4000:4000"
+    networks:
+      - str-consumer-ntw
+
+networks:
+  str-consumer-ntw:
+    name: str-consumer-ntw
+    driver: bridge
