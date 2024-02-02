@@ -22,4 +22,4 @@ WORKDIR /app
 RUN pip --default-timeout=1000 install poetry-plugin-export
 RUN poetry export -f requirements.txt | pip --default-timeout=1000 install -r /dev/stdin
 
-ENTRYPOINT ["python3.10", "-m", "str_producer.main"]
+ENTRYPOINT ["python3.8", "-m", "str_producer.main"]
