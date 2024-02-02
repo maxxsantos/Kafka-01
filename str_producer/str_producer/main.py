@@ -5,7 +5,7 @@ from confluent_kafka import Producer
 import json
 import os
 
-kafka_bootstrap_servers = '192.168.25.8:9092'
+kafka_bootstrap_servers = '172.31.141.162:9092'
 kafka_topic = 'teste'
 
 app = FastAPI()
